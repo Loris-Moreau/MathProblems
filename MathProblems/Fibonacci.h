@@ -2,34 +2,37 @@
 
 #include "Common.h"
 
+#include <boost/multiprecision/cpp_int.hpp>
+
+using boost::multiprecision::cpp_int;
+
 class Fibonacci
 {
 public:
-    
     // Returns {F(n), F(n+1)}
-    std::pair<uint64_t, uint64_t> fib_pair(uint64_t n)
+    std::pair<cpp_int, cpp_int> fib_pair(cpp_int n)
     {
         if (n == 0)
         {
             return {0, 1};
         }
         
-        auto [a, b] = fib_pair(n >> 1); // a = F(k), b = F(k+1)
+        auto [a, b] = fib_pair(n >> 1);
         
-        uint64_t c = a * (2 * b - a);   // F(2k)
-        uint64_t d = a * a + b * b;     // F(2k+1)
+        cpp_int c = a * (2 * b - a);
+        cpp_int d = a * a + b * b;
         
         if (n & 1)
         {
-            return {d, c + d};          // {F(2k+1), F(2k+2)}
+            return {d, c + d};
         }
         else
         {
-            return {c, d};              // {F(2k), F(2k+1)}
+            return {c, d};
         }
     }
     
-    uint64_t fibonacci(uint64_t n)
+    cpp_int fibonacci(cpp_int n)
     {
         return fib_pair(n).first;
     }
