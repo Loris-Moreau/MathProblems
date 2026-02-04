@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
         CollatzConjecture();
         return 0;
     case 3:
-        cout << "Amount of conjecture : ";
+        cout << "Amount of Elements : ";
         cin >> c;
         Fibonacci(c, false); 
         return 0;
