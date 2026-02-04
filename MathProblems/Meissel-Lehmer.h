@@ -83,44 +83,64 @@ public:
         return res;
     }
     
+    std::vector<cpp_int> pi_small; // pi_small[i] = number of primes ≤ i
+
+    void compute_pi_small(const std::vector<uint64_t>& primes, uint64_t limit)
+    {
+        pi_small.resize(limit + 1);
+        uint64_t j = 0;
+        for (uint64_t i = 0; i <= limit; ++i)
+        {
+            while (j < primes.size() && primes[j] <= i) ++j;
+            pi_small[i] = j;
+        }
+    }
+    
     // --- 4. Meissel-Lehmer recursive pi(n) ---
-    cpp_int pi_meissel_lehmer(const cpp_int& n, const std::vector<uint64_t>& primes, PhiMemo& memo)
+    cpp_int pi_lehmer(const cpp_int& n, const std::vector<uint64_t>& primes, PhiMemo& memo)
     {
         if (n < 2) return 0;
-        
-        if (n <= cpp_int(primes.back()))
+
+        if (n <= cpp_int(pi_small.size() - 1))
         {
-            cpp_int count = 0;
-            for (auto p : primes)
-            {
-                if (cpp_int(p) <= n) ++count;
-            }
-            return count;
+            return pi_small[n.convert_to<uint64_t>()];
         }
-        
-        cpp_int n_quarter = integer_root(n, 4);  // n^(1/4)
-        int a = static_cast<int>(pi_meissel_lehmer(n_quarter, primes, memo).convert_to<uint64_t>());
-        
+
+        cpp_int n_sqrt = integer_root(n, 2);
+        cpp_int n_cbrt = integer_root(n, 3);
+        cpp_int n_quarter = integer_root(n, 4);
+
+        int a = static_cast<int>(pi_lehmer(n_quarter, primes, memo).convert_to<uint64_t>());
+
         cpp_int result = memo.phi(n, a, primes) + a - 1;
-        
+
         for (int i = 0; i < a; ++i)
         {
             cpp_int n_over_p = n / cpp_int(primes[i]);
-            result -= pi_meissel_lehmer(n_over_p, primes, memo);
+            if (n_over_p <= cpp_int(pi_small.size() - 1))
+            {
+                result -= pi_small[n_over_p.convert_to<uint64_t>()];
+            }
+            else
+            {
+                result -= pi_lehmer(n_over_p, primes, memo);
+            }
         }
-        
+
         return result;
     }
     
     Meissel_Lehmer()
     {
-        cpp_int n = 10000000000;   // Count primes ≤ 10^10
-        uint64_t sieve_limit = 200000; // adjust: n^(2/3) heuristic
+        cpp_int n = 100000000000; // 10^11
+        uint64_t sieve_limit = 1000000; // n^(2/3) heuristic
         auto primes = sieve(sieve_limit);
-        
+
+        compute_pi_small(primes, sieve_limit); // precompute small π(x)
+
         PhiMemo memo;
-        cpp_int result = pi_meissel_lehmer(n, primes, memo);
-        
+        cpp_int result = pi_lehmer(n, primes, memo);
+
         std::cout << "pi(" << n << ") = " << result << "\n";
     }
 };
