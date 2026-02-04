@@ -53,13 +53,20 @@ public:
     
     /* -- -- -- -- -- */
     
-    Fibonacci(int amount, bool isMod = false)
+    Fibonacci(cpp_int amount, bool isMod = false)
     {
         if (isMod)
         {
-            cpp_int n = 1'000'000'000'000ULL;   // very large n
+            if (amount == 0)
+            {
+                amount = 1'000'000'000'000ULL; // very large n
+            }
             cpp_int m = 1'000'000'007;          // modulo
-            std::cout << fibonacci_mod(n, m) << "\n";
+            
+            for (cpp_int i = 0; i <= amount; ++i)
+            {
+                std::cout << "F(" << i << ") = " << fibonacci_mod(i, m) << '\n';
+            }
         }
         else
         {
