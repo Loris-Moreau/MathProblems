@@ -23,6 +23,7 @@ struct Point
 
 class MonotoneChain
 {
+public:
     // 3D cross product of OA and OB vectors, (i.e. z-component of their "2D" cross product, but remember that it is not defined in "2D").
     // Returns a positive value, if OAB makes a counter-clockwise turn,
     // negative for clockwise turn, and zero if the points are collinear.

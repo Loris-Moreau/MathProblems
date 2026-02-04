@@ -97,6 +97,7 @@
     <ClInclude Include="AndrewsMonotoneChain.h" />
     <ClInclude Include="CollatzConjecture.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Fibonacci.h" />
     <ClInclude Include="TSP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
