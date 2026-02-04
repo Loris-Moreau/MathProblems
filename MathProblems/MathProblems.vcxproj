@@ -100,6 +100,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Fibonacci.h" />
     <ClInclude Include="Meissel-Lehmer.h" />
+    <ClInclude Include="Pollard-Rho.h" />
     <ClInclude Include="TSP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
